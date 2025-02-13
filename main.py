@@ -14,6 +14,10 @@ CORS(app)  # Habilitar CORS para todas las rutas
 # Cargar recursos al iniciar la aplicación
 intents, words, classes, model = load_resources()
 
+@app.route("/")
+def home():
+    return "¡El servidor está funcionando correctamente!"
+
 @app.route('/api/get_response', methods=['POST'])
 def chatbot_response():
     """

@@ -6,14 +6,24 @@ import logging
 import os
 
 # Configuración de logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 #logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
 CORS(app)  # Habilitar CORS para todas las rutas
 
 # Cargar recursos al iniciar la aplicación
-intents, words, classes, model = load_resources()
+# intents, words, classes, model = load_resources()
+
+# Cargar recursos al iniciar la aplicación
+try:
+    logging.info("Cargando recursos...")
+    intents, words, classes, model = load_resources()
+    logging.info("Recursos cargados correctamente.")
+except Exception as e:
+    logging.error(f"Error al cargar recursos: {e}")
+    raise  # Detener la aplicación si no se pueden cargar los recursos
+
 
 @app.route("/")
 def home():
@@ -51,4 +61,5 @@ def chatbot_response():
 if __name__ == "__main__":
     # Usar el puerto que Render asigna o 5000 si estás localmente
     port = int(os.environ.get('PORT', 5000))
+    logging.info(f"Iniciando servidor en el puerto {port}...")
     app.run(host='0.0.0.0', port=port)
